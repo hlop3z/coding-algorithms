@@ -1,4 +1,4 @@
-# Typical Layered (Domain-Driven) Architecture
+# Typical Layered (Domain-Driven Design) Architecture
 
 | Layer / Pattern                    | Primary Responsibility                                                | Inputs / Outputs                 | Typical Example Class         |
 | ---------------------------------- | --------------------------------------------------------------------- | -------------------------------- | ----------------------------- |
