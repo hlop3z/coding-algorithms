@@ -1,0 +1,110 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --color-best: #53d000;
+    --color-good: #c8ea00;
+    --color-fair: #ffeb3b;
+    --color-moderate: #ffc543;
+    --color-bad: #ff8989;
+    --color-na: #e3e3e3;
+    --color-shapes-bg: #9fe201;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100;
+    @apply antialiased;
+  }
+
+  /* Accessibility: Focus visible styles */
+  :focus-visible {
+    @apply outline-none ring-2 ring-blue-500 ring-offset-2 ring-offset-white dark:ring-offset-gray-900;
+  }
+
+  /* Skip to main content link */
+  .skip-link {
+    @apply absolute -top-10 left-4 z-[200] px-4 py-2 bg-blue-600 text-white rounded-md;
+    @apply focus:top-4 transition-all;
+  }
+}
+
+@layer components {
+  /* Table styles */
+  .data-table {
+    @apply w-full border-collapse text-sm;
+  }
+
+  .data-table th {
+    @apply bg-gray-100 dark:bg-gray-800 px-3 py-2 text-left font-semibold;
+    @apply border border-gray-200 dark:border-gray-700;
+  }
+
+  .data-table td {
+    @apply px-3 py-2 border border-gray-200 dark:border-gray-700;
+  }
+
+  .data-table tbody tr:nth-child(even) {
+    @apply bg-gray-50 dark:bg-gray-800/50;
+  }
+
+  .data-table tbody tr:hover {
+    @apply bg-gray-100 dark:bg-gray-800;
+  }
+
+  /* Search input */
+  .search-input {
+    @apply w-full max-w-md px-4 py-2 rounded-lg;
+    @apply border border-gray-300 dark:border-gray-600;
+    @apply bg-white dark:bg-gray-800;
+    @apply focus:outline-none focus:ring-2 focus:ring-blue-500;
+    @apply placeholder:text-gray-400;
+  }
+
+  /* Note box */
+  .note-box {
+    @apply border-l-4 border-gray-400 bg-gray-50 dark:bg-gray-800;
+    @apply p-4 my-4 rounded-r-lg;
+  }
+
+  .note-box-title {
+    @apply font-semibold text-gray-700 dark:text-gray-300 mb-2;
+  }
+}
+
+@layer utilities {
+  /* Shape cell background */
+  .shape-cell {
+    background-color: var(--color-shapes-bg) !important;
+  }
+  .dark .shape-cell {
+    background-color: var(--color-shapes-bg) !important;
+  }
+
+  /* Complexity cell colors */
+  .complexity-best { background-color: var(--color-best); }
+  .complexity-good { background-color: var(--color-good); }
+  .complexity-fair { background-color: var(--color-fair); }
+  .complexity-moderate { background-color: var(--color-moderate); }
+  .complexity-bad { background-color: var(--color-bad); }
+  .complexity-na { background-color: var(--color-na); }
+
+  /* Responsive table wrapper */
+  .table-responsive {
+    @apply overflow-x-auto -mx-4 px-4 md:mx-0 md:px-0;
+  }
+
+  /* Hide scrollbar but allow scrolling */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+}

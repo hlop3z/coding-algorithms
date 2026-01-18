@@ -1,0 +1,21 @@
+---
+import { getComplexityClass } from '@/data/colors';
+
+interface Props {
+  notation: string;
+  class?: string;
+}
+
+const { notation, class: className } = Astro.props;
+const colorClass = getComplexityClass(notation);
+---
+
+<span
+  class:list={[
+    'inline-block px-2 py-1 rounded text-sm font-mono',
+    colorClass,
+    className,
+  ]}
+>
+  {notation}
+</span>

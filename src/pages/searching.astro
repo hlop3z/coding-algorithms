@@ -1,0 +1,73 @@
+---
+import DocsLayout from '@/layouts/DocsLayout.astro';
+import ColorBadge from '@/components/ui/ColorBadge.astro';
+import NoteBox from '@/components/ui/NoteBox.astro';
+import { searchAlgorithms, searchAlgorithmLegend } from '@/data/search-algorithms';
+---
+
+<DocsLayout title="Searching Algorithms">
+  <h1 class="text-3xl font-bold mb-8">Searching Algorithms</h1>
+
+  <section class="mb-12">
+    <h2 class="text-2xl font-semibold mb-4">Array Search Operations</h2>
+    <div class="overflow-x-auto">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Algorithm</th>
+            <th class="max-w-md">Description</th>
+            <th class="text-center">Time Average (Θ)</th>
+            <th class="text-center">Time Worst (O)</th>
+          </tr>
+        </thead>
+        <tbody>
+          {searchAlgorithms.array.map((algo) => (
+            <tr>
+              <td class="font-medium">{algo.name} Search</td>
+              <td class="max-w-md text-sm text-gray-600 dark:text-gray-400">{algo.description}</td>
+              <td class="text-center"><ColorBadge notation={algo.average} /></td>
+              <td class="text-center"><ColorBadge notation={algo.worst} /></td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="mb-12">
+    <h2 class="text-2xl font-semibold mb-4">Graph Search Operations</h2>
+    <div class="overflow-x-auto">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Algorithm</th>
+            <th class="max-w-md">Description</th>
+            <th class="text-center">Time Average (Θ)</th>
+            <th class="text-center">Time Worst (O)</th>
+          </tr>
+        </thead>
+        <tbody>
+          {searchAlgorithms.graph.map((algo) => (
+            <tr>
+              <td class="font-medium">{algo.name}</td>
+              <td class="max-w-md text-sm text-gray-600 dark:text-gray-400">{algo.description}</td>
+              <td class="text-center"><ColorBadge notation={algo.average} /></td>
+              <td class="text-center"><ColorBadge notation={algo.worst} /></td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <NoteBox title="Legend">
+    <ul class="grid grid-cols-2 md:grid-cols-4 gap-2">
+      {searchAlgorithmLegend.map((item) => (
+        <li>
+          <code class="bg-gray-200 dark:bg-gray-700 px-1 rounded">{item.symbol}</code>
+          <span class="text-sm"> = {item.meaning}</span>
+        </li>
+      ))}
+    </ul>
+  </NoteBox>
+</DocsLayout>

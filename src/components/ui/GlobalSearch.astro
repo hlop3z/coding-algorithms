@@ -1,0 +1,152 @@
+---
+// Global search component using Pagefind
+---
+
+<div class="relative">
+  <button
+    id="search-btn"
+    class="flex items-center gap-2 px-3 py-1.5 text-sm text-gray-400 bg-gray-700 rounded-md hover:bg-gray-600 transition-colors"
+    aria-label="Open search"
+  >
+    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+    </svg>
+    <span class="hidden sm:inline">Search</span>
+    <kbd class="hidden sm:inline-flex items-center gap-1 px-1.5 py-0.5 text-xs bg-gray-600 rounded">
+      <span class="text-[10px]">⌘</span>K
+    </kbd>
+  </button>
+</div>
+
+<!-- Search Modal -->
+<div
+  id="search-modal"
+  class="fixed inset-0 z-[100] hidden"
+  role="dialog"
+  aria-modal="true"
+  aria-label="Search"
+>
+  <div class="fixed inset-0 bg-black/50 backdrop-blur-sm" id="search-backdrop"></div>
+  <div class="fixed inset-x-4 top-[10%] mx-auto max-w-2xl">
+    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-2xl border border-gray-200 dark:border-gray-700 overflow-hidden">
+      <div id="search-container" class="p-4"></div>
+    </div>
+  </div>
+</div>
+
+<style is:global>
+  /* Pagefind UI Customization */
+  :root {
+    --pagefind-ui-scale: 0.9;
+    --pagefind-ui-primary: #3b82f6;
+    --pagefind-ui-text: #1f2937;
+    --pagefind-ui-background: #ffffff;
+    --pagefind-ui-border: #e5e7eb;
+    --pagefind-ui-tag: #f3f4f6;
+    --pagefind-ui-border-width: 1px;
+    --pagefind-ui-border-radius: 8px;
+    --pagefind-ui-font: inherit;
+  }
+
+  .dark {
+    --pagefind-ui-primary: #60a5fa;
+    --pagefind-ui-text: #f3f4f6;
+    --pagefind-ui-background: #1f2937;
+    --pagefind-ui-border: #374151;
+    --pagefind-ui-tag: #374151;
+  }
+
+  .pagefind-ui__search-input {
+    font-size: 1rem !important;
+    padding: 0.75rem 1rem !important;
+  }
+
+  .pagefind-ui__result-link {
+    font-weight: 500 !important;
+  }
+
+  .pagefind-ui__result-excerpt {
+    font-size: 0.875rem !important;
+    color: var(--pagefind-ui-text) !important;
+    opacity: 0.7;
+  }
+</style>
+
+<script>
+  // Import Pagefind UI
+  async function initSearch() {
+    const container = document.getElementById('search-container');
+    if (!container) return;
+
+    try {
+      const { PagefindUI } = await import('@pagefind/default-ui');
+
+      new PagefindUI({
+        element: container,
+        showSubResults: true,
+        showImages: false,
+        baseUrl: '/coding-algorithms/',
+        translations: {
+          placeholder: 'Search documentation...',
+          zero_results: 'No results found for "[SEARCH_TERM]"',
+        },
+      });
+    } catch (e) {
+      // Pagefind only works after build, show message in dev mode
+      container.innerHTML = `
+        <div class="text-center py-8 text-gray-500 dark:text-gray-400">
+          <p class="mb-2">Search is only available in production.</p>
+          <p class="text-sm">Run <code class="bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">pnpm build && pnpm preview</code> to test search.</p>
+        </div>
+      `;
+    }
+  }
+
+  // Modal controls
+  const modal = document.getElementById('search-modal');
+  const btn = document.getElementById('search-btn');
+  const backdrop = document.getElementById('search-backdrop');
+  let initialized = false;
+
+  function openModal() {
+    modal?.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+
+    if (!initialized) {
+      initSearch();
+      initialized = true;
+    }
+
+    // Focus search input after a short delay
+    setTimeout(() => {
+      const input = document.querySelector('.pagefind-ui__search-input') as HTMLInputElement;
+      input?.focus();
+    }, 100);
+  }
+
+  function closeModal() {
+    modal?.classList.add('hidden');
+    document.body.style.overflow = '';
+  }
+
+  btn?.addEventListener('click', openModal);
+  backdrop?.addEventListener('click', closeModal);
+
+  // Keyboard shortcuts
+  document.addEventListener('keydown', (e) => {
+    // Cmd/Ctrl + K to open
+    if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+      e.preventDefault();
+      if (modal?.classList.contains('hidden')) {
+        openModal();
+      } else {
+        closeModal();
+      }
+    }
+
+    // Escape to close
+    if (e.key === 'Escape' && !modal?.classList.contains('hidden')) {
+      closeModal();
+    }
+  });
+</script>

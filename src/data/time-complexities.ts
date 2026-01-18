@@ -1,0 +1,52 @@
+import type { TimeComplexity } from './types';
+
+export const timeComplexities: TimeComplexity[] = [
+  {
+    name: 'Constant',
+    notation: 'O(1)',
+    description: 'Constant time regardless of input size',
+    level: 'best',
+  },
+  {
+    name: 'Logarithmic',
+    notation: 'O(log n)',
+    description: 'Increases logarithmically with input size',
+    level: 'good',
+  },
+  {
+    name: 'Linear',
+    notation: 'O(n)',
+    description: 'Increases linearly with input size',
+    level: 'fair',
+  },
+  {
+    name: 'Linearithmic',
+    notation: 'O(n log n)',
+    description: 'Increases in proportion to the product of input size and its logarithm',
+    level: 'fair',
+  },
+  {
+    name: 'Quadratic',
+    notation: 'O(n²)',
+    description: 'Increases quadratically with input size',
+    level: 'bad',
+  },
+  {
+    name: 'Cubic',
+    notation: 'O(n³)',
+    description: 'Increases cubically with input size',
+    level: 'bad',
+  },
+  {
+    name: 'Exponential',
+    notation: 'O(2ⁿ)',
+    description: 'Doubles with each additional element in input',
+    level: 'worst',
+  },
+  {
+    name: 'Factorial',
+    notation: 'O(n!)',
+    description: 'Grows factorially with input size',
+    level: 'worst',
+  },
+];

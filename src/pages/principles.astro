@@ -1,0 +1,39 @@
+---
+import DocsLayout from '@/layouts/DocsLayout.astro';
+import SimpleTable from '@/components/tables/SimpleTable.astro';
+import { concepts } from '@/data/concepts';
+
+const columns = [
+  { key: 'name', label: 'Name', class: 'font-medium whitespace-nowrap' },
+  { key: 'description', label: 'Description' },
+];
+---
+
+<DocsLayout title="Principles & Design">
+  <h1 class="text-3xl font-bold mb-8">Principles & Design</h1>
+
+  <section class="mb-12">
+    <h2 class="text-2xl font-semibold mb-4">Object-Oriented Programming (OOP)</h2>
+    <SimpleTable data={concepts.oop} columns={columns} />
+  </section>
+
+  <section class="mb-12">
+    <h2 class="text-2xl font-semibold mb-4">SOLID Principles</h2>
+    <SimpleTable data={concepts.solid} columns={columns} />
+  </section>
+
+  <section class="mb-12">
+    <h2 class="text-2xl font-semibold mb-4">Software Design Patterns</h2>
+    <SimpleTable data={concepts.design} columns={columns} />
+  </section>
+
+  <section class="mb-12">
+    <h2 class="text-2xl font-semibold mb-4">Software Development Principles</h2>
+    <SimpleTable data={concepts.principles} columns={columns} />
+  </section>
+
+  <section class="mb-12">
+    <h2 class="text-2xl font-semibold mb-4">Software Development Paradigms</h2>
+    <SimpleTable data={concepts.paradigms} columns={columns} />
+  </section>
+</DocsLayout>

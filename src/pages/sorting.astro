@@ -1,0 +1,41 @@
+---
+import DocsLayout from '@/layouts/DocsLayout.astro';
+import ColorBadge from '@/components/ui/ColorBadge.astro';
+import SearchInput from '@/components/ui/SearchInput.astro';
+import { sortingAlgorithms } from '@/data/sorting-algorithms';
+---
+
+<DocsLayout title="Sorting Algorithms">
+  <h1 class="text-3xl font-bold mb-8">Sorting Algorithms</h1>
+
+  <div class="mb-6">
+    <SearchInput id="sort-search" targetId="sort-table" placeholder="Search algorithms..." />
+  </div>
+
+  <div class="overflow-x-auto">
+    <table id="sort-table" class="data-table">
+      <thead>
+        <tr>
+          <th>Algorithm</th>
+          <th class="max-w-md">Description</th>
+          <th class="text-center">Time Best (Ω)</th>
+          <th class="text-center">Time Average (Θ)</th>
+          <th class="text-center">Time Worst (O)</th>
+          <th class="text-center">Space Worst</th>
+        </tr>
+      </thead>
+      <tbody>
+        {sortingAlgorithms.map((algo) => (
+          <tr>
+            <td class="font-medium">{algo.name} Sort</td>
+            <td class="max-w-md text-sm text-gray-600 dark:text-gray-400">{algo.description}</td>
+            <td class="text-center"><ColorBadge notation={algo.time.best} /></td>
+            <td class="text-center"><ColorBadge notation={algo.time.average} /></td>
+            <td class="text-center"><ColorBadge notation={algo.time.worst} /></td>
+            <td class="text-center"><ColorBadge notation={algo.space.worst} /></td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+</DocsLayout>

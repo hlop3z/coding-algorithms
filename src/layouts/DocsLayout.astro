@@ -1,0 +1,24 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import Navbar from '@/components/layout/Navbar.astro';
+import Footer from '@/components/layout/Footer.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+  wide?: boolean;
+}
+
+const { title, description, wide = false } = Astro.props;
+const currentPath = Astro.url.pathname.replace('/coding-algorithms', '');
+---
+
+<BaseLayout title={title} description={description}>
+  <Navbar currentPath={currentPath} />
+
+  <main id="main-content" class:list={["flex-1 mx-auto px-4 py-8 w-full", wide ? "max-w-[95vw]" : "max-w-7xl"]}>
+    <slot />
+  </main>
+
+  <Footer />
+</BaseLayout>

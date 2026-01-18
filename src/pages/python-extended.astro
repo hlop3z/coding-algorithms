@@ -1,0 +1,72 @@
+---
+import DocsLayout from '@/layouts/DocsLayout.astro';
+import SearchInput from '@/components/ui/SearchInput.astro';
+import { allPythonMethods, pythonModuleGroups } from '@/data/python-modules';
+---
+
+<DocsLayout title="Python Extended">
+  <h1 class="text-3xl font-bold mb-8">Python Extended</h1>
+  <p class="text-gray-600 dark:text-gray-400 mb-6">Common Python methods organized by module.</p>
+
+  <div class="mb-6 flex flex-wrap gap-4 items-center">
+    <SearchInput id="py-search" targetId="py-table" placeholder="Search by method, group, or description..." class="flex-1 min-w-[200px]" />
+
+    <div class="flex gap-2 items-center">
+      <label for="module-filter" class="text-sm font-medium text-gray-600 dark:text-gray-400">Module:</label>
+      <select id="module-filter" class="search-input w-auto">
+        <option value="all">All</option>
+        {pythonModuleGroups.map((group) => (
+          <option value={group}>{group}</option>
+        ))}
+      </select>
+    </div>
+  </div>
+
+  <div class="overflow-x-auto">
+    <table id="py-table" class="data-table">
+      <thead>
+        <tr>
+          <th>Method</th>
+          <th>Module</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        {allPythonMethods.map((item) => (
+          <tr data-group={item.group}>
+            <td class="font-mono text-sm text-blue-600 dark:text-blue-400">{item.method}</td>
+            <td class="whitespace-nowrap">
+              <span class="px-2 py-1 bg-gray-100 dark:bg-gray-800 rounded text-sm">{item.group}</span>
+            </td>
+            <td class="text-sm text-gray-600 dark:text-gray-400">{item.description}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+</DocsLayout>
+
+<script>
+  const searchInput = document.getElementById('py-search') as HTMLInputElement;
+  const moduleFilter = document.getElementById('module-filter') as HTMLSelectElement;
+  const table = document.getElementById('py-table');
+  const rows = table?.querySelectorAll('tbody tr');
+
+  function filterTable() {
+    const searchQuery = searchInput?.value.toLowerCase().trim() || '';
+    const selectedModule = moduleFilter?.value || 'all';
+
+    rows?.forEach((row) => {
+      const text = row.textContent?.toLowerCase() || '';
+      const rowGroup = row.getAttribute('data-group');
+
+      const matchesSearch = searchQuery === '' || text.includes(searchQuery);
+      const matchesModule = selectedModule === 'all' || rowGroup === selectedModule;
+
+      (row as HTMLElement).style.display = matchesSearch && matchesModule ? '' : 'none';
+    });
+  }
+
+  searchInput?.addEventListener('input', filterTable);
+  moduleFilter?.addEventListener('change', filterTable);
+</script>

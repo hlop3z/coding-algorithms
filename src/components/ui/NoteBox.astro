@@ -1,0 +1,21 @@
+---
+interface Props {
+  title?: string;
+  variant?: 'info' | 'warning' | 'tip';
+}
+
+const { title = 'Note', variant = 'info' } = Astro.props;
+
+const variantStyles = {
+  info: 'border-blue-400 bg-blue-50 dark:bg-blue-900/20',
+  warning: 'border-yellow-400 bg-yellow-50 dark:bg-yellow-900/20',
+  tip: 'border-green-400 bg-green-50 dark:bg-green-900/20',
+};
+---
+
+<div class:list={['border-l-4 p-4 my-4 rounded-r-lg', variantStyles[variant]]}>
+  {title && <p class="font-semibold text-gray-700 dark:text-gray-300 mb-2">{title}</p>}
+  <div class="text-gray-600 dark:text-gray-400">
+    <slot />
+  </div>
+</div>

@@ -1,0 +1,114 @@
+---
+import ThemeToggle from '@/components/ui/ThemeToggle.astro';
+import GlobalSearch from '@/components/ui/GlobalSearch.astro';
+
+interface Props {
+  currentPath: string;
+}
+
+const { currentPath } = Astro.props;
+
+const navItems = [
+  { label: 'Big-O', href: '/' },
+  { label: 'Data Structures', href: '/data-structures' },
+  { label: 'Sorting', href: '/sorting' },
+  { label: 'Searching', href: '/searching' },
+  { label: 'Principles', href: '/principles' },
+  { label: 'APIs', href: '/apis' },
+  { label: 'SQL', href: '/sql' },
+  { label: 'Python', href: '/python' },
+  { label: 'Python+', href: '/python-extended' },
+  { label: 'Resources', href: '/resources' },
+];
+
+function isActive(href: string): boolean {
+  const normalizedPath = currentPath.replace(/\/$/, '') || '/';
+  if (href === '/') return normalizedPath === '/';
+  return normalizedPath.startsWith(href);
+}
+---
+
+<nav class="bg-brand-dark text-white sticky top-0 z-50">
+  <div class="max-w-7xl mx-auto px-4">
+    <div class="flex items-center justify-between h-14">
+      <!-- Logo -->
+      <a href="/coding-algorithms/" class="font-bold text-lg hover:text-gray-300 transition-colors">
+        Coding Algorithms
+      </a>
+
+      <!-- Desktop Nav -->
+      <div class="hidden lg:flex items-center gap-1">
+        {navItems.map((item) => (
+          <a
+            href={`/coding-algorithms${item.href === '/' ? '/' : item.href + '/'}`}
+            class:list={[
+              'px-3 py-2 rounded-md text-sm font-medium transition-colors',
+              isActive(item.href)
+                ? 'bg-gray-700 text-white'
+                : 'text-gray-300 hover:bg-gray-700 hover:text-white'
+            ]}
+          >
+            {item.label}
+          </a>
+        ))}
+        <div class="ml-2">
+          <GlobalSearch />
+        </div>
+        <div class="ml-1">
+          <ThemeToggle />
+        </div>
+      </div>
+
+      <!-- Mobile Menu Button -->
+      <div class="lg:hidden flex items-center gap-2">
+        <ThemeToggle />
+        <button
+          id="mobile-menu-btn"
+          class="p-2 rounded-md hover:bg-gray-700"
+          aria-label="Toggle menu"
+          aria-expanded="false"
+        >
+          <svg id="menu-icon-open" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+          <svg id="menu-icon-close" class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile Menu -->
+  <div id="mobile-menu" class="hidden lg:hidden bg-brand-dark border-t border-gray-700">
+    <div class="px-2 pt-2 pb-3 space-y-1">
+      {navItems.map((item) => (
+        <a
+          href={`/coding-algorithms${item.href === '/' ? '/' : item.href + '/'}`}
+          class:list={[
+            'block px-3 py-2 rounded-md text-base font-medium',
+            isActive(item.href)
+              ? 'bg-gray-700 text-white'
+              : 'text-gray-300 hover:bg-gray-700 hover:text-white'
+          ]}
+        >
+          {item.label}
+        </a>
+      ))}
+    </div>
+  </div>
+</nav>
+
+<script>
+  const btn = document.getElementById('mobile-menu-btn');
+  const menu = document.getElementById('mobile-menu');
+  const iconOpen = document.getElementById('menu-icon-open');
+  const iconClose = document.getElementById('menu-icon-close');
+
+  btn?.addEventListener('click', () => {
+    const isHidden = menu?.classList.toggle('hidden');
+    iconOpen?.classList.toggle('hidden', !isHidden);
+    iconClose?.classList.toggle('hidden', isHidden);
+    btn.setAttribute('aria-expanded', String(!isHidden));
+  });
+</script>

@@ -1,0 +1,52 @@
+---
+import DocsLayout from '@/layouts/DocsLayout.astro';
+import NoteBox from '@/components/ui/NoteBox.astro';
+import { resources } from '@/data/resources';
+---
+
+<DocsLayout title="Resources">
+  <h1 class="text-3xl font-bold mb-8">Resources</h1>
+  <p class="text-gray-600 dark:text-gray-400 mb-6">
+    Curated external resources for learning algorithms, data structures, and Python.
+  </p>
+
+  <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3 mb-8">
+    {resources.map((resource) => (
+      <a
+        href={resource.url}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="block p-4 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg hover:border-blue-500 dark:hover:border-blue-400 hover:shadow-md transition-all group"
+      >
+        <div class="flex items-center justify-between">
+          <span class="font-medium text-gray-900 dark:text-gray-100 group-hover:text-blue-600 dark:group-hover:text-blue-400">
+            {resource.name}
+          </span>
+          <svg
+            class="w-4 h-4 text-gray-400 group-hover:text-blue-500"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+            />
+          </svg>
+        </div>
+        <p class="text-sm text-gray-500 dark:text-gray-400 mt-1 truncate">
+          {resource.url}
+        </p>
+      </a>
+    ))}
+  </div>
+
+  <NoteBox title="Disclaimer" variant="info">
+    <p>
+      Some content on this site was gathered with AI assistance. While we strive for accuracy,
+      please verify information with official documentation when in doubt.
+    </p>
+  </NoteBox>
+</DocsLayout>

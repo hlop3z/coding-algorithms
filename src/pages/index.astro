@@ -1,0 +1,76 @@
+---
+import DocsLayout from '@/layouts/DocsLayout.astro';
+import SimpleTable from '@/components/tables/SimpleTable.astro';
+import ColorBadge from '@/components/ui/ColorBadge.astro';
+import NoteBox from '@/components/ui/NoteBox.astro';
+import { asymptoticNotations } from '@/data/asymptotic-notations';
+import { timeComplexities } from '@/data/time-complexities';
+import { qualityToTextClass, qualityToLabel } from '@/data/colors';
+
+const notationColumns = [
+  { key: 'name', label: 'Name' },
+  { key: 'notation', label: 'Notation', class: 'font-mono text-center' },
+  { key: 'description', label: 'Description' },
+  { key: 'simplified', label: 'Simplified' },
+  { key: 'note', label: 'Note' },
+];
+---
+
+<DocsLayout title="Big-O Notation">
+  <h1 class="text-3xl font-bold mb-8">Big-O Notation</h1>
+
+  <section class="mb-12">
+    <h2 class="text-2xl font-semibold mb-4">Asymptotic Notations</h2>
+    <SimpleTable data={asymptoticNotations} columns={notationColumns} />
+  </section>
+
+  <section class="mb-12">
+    <h2 class="text-2xl font-semibold mb-4">Time & Space Complexities</h2>
+    <div class="overflow-x-auto">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Notation</th>
+            <th>Description</th>
+            <th>Quality</th>
+          </tr>
+        </thead>
+        <tbody>
+          {timeComplexities.map((tc) => (
+            <tr>
+              <td>{tc.name}</td>
+              <td><ColorBadge notation={tc.notation} /></td>
+              <td>{tc.description}</td>
+              <td class={`font-medium ${qualityToTextClass[tc.level]}`}>
+                {qualityToLabel[tc.level]}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="mb-12">
+    <h2 class="text-2xl font-semibold mb-4">Complexity Chart</h2>
+    <img
+      src="/coding-algorithms/images/big-o-chart.png"
+      alt="Big-O Complexity Chart"
+      class="max-w-full rounded-lg shadow-lg"
+      loading="lazy"
+    />
+  </section>
+
+  <NoteBox title="Important Notes">
+    <ul class="list-disc list-inside space-y-2">
+      <li>
+        Big-O (O), Big-Theta (Θ), and Big-Omega (Ω) are asymptotic notations,
+        not the same as best, worst, and expected cases.
+      </li>
+      <li>
+        When we say Log(n), we typically mean Log base 2.
+      </li>
+    </ul>
+  </NoteBox>
+</DocsLayout>

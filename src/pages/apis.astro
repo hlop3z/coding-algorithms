@@ -1,0 +1,40 @@
+---
+import DocsLayout from '@/layouts/DocsLayout.astro';
+import SimpleTable from '@/components/tables/SimpleTable.astro';
+import NoteBox from '@/components/ui/NoteBox.astro';
+import { restMethods, restConstraints, graphqlConcepts } from '@/data/api-notes';
+
+const methodColumns = [
+  { key: 'name', label: 'Method', class: 'font-mono font-medium' },
+  { key: 'description', label: 'CRUD Operation' },
+];
+
+const conceptColumns = [
+  { key: 'name', label: 'Name', class: 'font-medium whitespace-nowrap' },
+  { key: 'description', label: 'Description' },
+];
+---
+
+<DocsLayout title="APIs">
+  <h1 class="text-3xl font-bold mb-8">APIs</h1>
+
+  <section class="mb-12">
+    <h2 class="text-2xl font-semibold mb-4">REST Architectural Constraints</h2>
+    <SimpleTable data={restConstraints} columns={conceptColumns} />
+    <NoteBox title="Note" variant="info">
+      <p>REST = <strong>RE</strong>presentational <strong>S</strong>tate <strong>T</strong>ransfer</p>
+    </NoteBox>
+  </section>
+
+  <section class="mb-12">
+    <h2 class="text-2xl font-semibold mb-4">REST Methods</h2>
+    <div class="max-w-md">
+      <SimpleTable data={restMethods} columns={methodColumns} />
+    </div>
+  </section>
+
+  <section class="mb-12">
+    <h2 class="text-2xl font-semibold mb-4">GraphQL</h2>
+    <SimpleTable data={graphqlConcepts} columns={conceptColumns} />
+  </section>
+</DocsLayout>

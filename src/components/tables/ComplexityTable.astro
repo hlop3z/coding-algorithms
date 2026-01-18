@@ -1,0 +1,101 @@
+---
+import ColorBadge from '@/components/ui/ColorBadge.astro';
+
+interface Column {
+  key: string;
+  label: string;
+  isComplexity?: boolean;
+  subColumns?: { key: string; label: string }[];
+}
+
+interface Props {
+  id: string;
+  data: object[];
+  columns: Column[];
+  class?: string;
+}
+
+const { id, data, columns, class: className } = Astro.props;
+
+// Helper to get nested value from object
+function getValue(obj: object, path: string): unknown {
+  return path.split('.').reduce((acc: unknown, part) => {
+    if (acc && typeof acc === 'object') {
+      return (acc as Record<string, unknown>)[part];
+    }
+    return undefined;
+  }, obj);
+}
+
+// Check if any column has subColumns (for multi-row headers)
+const hasSubColumns = columns.some((col) => col.subColumns);
+---
+
+<div class:list={['overflow-x-auto', className]}>
+  <table id={id} class="data-table">
+    <thead>
+      {hasSubColumns ? (
+        <>
+          <tr>
+            {columns.map((col) => (
+              <th
+                rowspan={col.subColumns ? 1 : 2}
+                colspan={col.subColumns ? col.subColumns.length : 1}
+                class="text-center"
+              >
+                {col.label}
+              </th>
+            ))}
+          </tr>
+          <tr>
+            {columns.map((col) =>
+              col.subColumns?.map((sub) => (
+                <th class="text-center">{sub.label}</th>
+              ))
+            )}
+          </tr>
+        </>
+      ) : (
+        <tr>
+          {columns.map((col) => (
+            <th>{col.label}</th>
+          ))}
+        </tr>
+      )}
+    </thead>
+    <tbody>
+      {data.map((row) => (
+        <tr>
+          {columns.map((col) => {
+            if (col.subColumns) {
+              return col.subColumns.map((sub) => {
+                const fullKey = `${col.key}.${sub.key}`;
+                const value = getValue(row, fullKey);
+                return (
+                  <td class="text-center">
+                    {col.isComplexity && typeof value === 'string' ? (
+                      <ColorBadge notation={value} />
+                    ) : (
+                      String(value ?? '')
+                    )}
+                  </td>
+                );
+              });
+            }
+
+            const value = getValue(row, col.key);
+            return (
+              <td>
+                {col.isComplexity && typeof value === 'string' ? (
+                  <ColorBadge notation={value} />
+                ) : (
+                  String(value ?? '')
+                )}
+              </td>
+            );
+          })}
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>

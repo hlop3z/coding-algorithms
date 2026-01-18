@@ -1,0 +1,65 @@
+---
+import DocsLayout from '@/layouts/DocsLayout.astro';
+import SearchInput from '@/components/ui/SearchInput.astro';
+import { pythonZen, pythonMagicMethods, pythonUsefulNotes } from '@/data/python-notes';
+---
+
+<DocsLayout title="Python">
+  <h1 class="text-3xl font-bold mb-8">Python</h1>
+
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <!-- Dunder Methods Column -->
+    <div>
+      <h2 class="text-xl font-semibold mb-4">Dunder (Magic) Methods</h2>
+      <div class="mb-4">
+        <SearchInput id="magic-search" targetId="magic-table" placeholder="Search methods..." />
+      </div>
+      <div class="overflow-y-auto max-h-[600px] border border-gray-200 dark:border-gray-700 rounded-lg">
+        <table id="magic-table" class="data-table text-sm">
+          <thead class="sticky top-0">
+            <tr>
+              <th>Method</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            {pythonMagicMethods.map((item) => (
+              <tr>
+                <td class="font-mono text-purple-600 dark:text-purple-400 whitespace-nowrap">{item.method}</td>
+                <td class="text-gray-600 dark:text-gray-400">{item.description}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Zen of Python Column -->
+    <div>
+      <h2 class="text-xl font-semibold mb-4">PEP 20 - The Zen of Python</h2>
+      <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-4 border border-gray-200 dark:border-gray-700">
+        <ol class="space-y-2">
+          {pythonZen.map((item) => (
+            <li class="flex gap-3">
+              <span class="text-gray-400 font-mono text-sm w-6 flex-shrink-0">{item.index}.</span>
+              <span class="text-gray-700 dark:text-gray-300 text-sm italic">{item.description}</span>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </div>
+
+    <!-- Useful Notes Column -->
+    <div>
+      <h2 class="text-xl font-semibold mb-4">Useful Notes</h2>
+      <div class="space-y-4">
+        {pythonUsefulNotes.map((note) => (
+          <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-4 border border-gray-200 dark:border-gray-700">
+            <h3 class="font-medium text-gray-900 dark:text-gray-100 mb-2">{note.title}</h3>
+            <p class="text-sm text-gray-600 dark:text-gray-400 font-mono">{note.notes}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</DocsLayout>

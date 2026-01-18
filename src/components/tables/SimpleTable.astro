@@ -1,0 +1,44 @@
+---
+interface Column {
+  key: string;
+  label: string;
+  class?: string;
+}
+
+interface Props {
+  id?: string;
+  data: object[];
+  columns: Column[];
+  class?: string;
+}
+
+const { id, data, columns, class: className } = Astro.props;
+
+// Helper to get value from object by key
+function getValue(obj: object, key: string): unknown {
+  return (obj as Record<string, unknown>)[key];
+}
+---
+
+<div class:list={['overflow-x-auto', className]}>
+  <table id={id} class="data-table">
+    <thead>
+      <tr>
+        {columns.map((col) => (
+          <th class={col.class}>{col.label}</th>
+        ))}
+      </tr>
+    </thead>
+    <tbody>
+      {data.map((row) => (
+        <tr>
+          {columns.map((col) => (
+            <td class={col.class}>
+              {String(getValue(row, col.key) ?? '')}
+            </td>
+          ))}
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>

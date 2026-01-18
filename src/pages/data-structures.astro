@@ -1,0 +1,101 @@
+---
+import DocsLayout from '@/layouts/DocsLayout.astro';
+import ColorBadge from '@/components/ui/ColorBadge.astro';
+import SearchInput from '@/components/ui/SearchInput.astro';
+import { dataStructures, dataStructureGroups } from '@/data/data-structures';
+---
+
+<DocsLayout title="Data Structures" wide>
+  <h1 class="text-3xl font-bold mb-8">Data Structures</h1>
+
+  <div class="mb-6 flex flex-wrap gap-4 items-center">
+    <SearchInput id="ds-search" targetId="ds-table" placeholder="Search by name or group..." class="flex-1 min-w-[200px]" />
+
+    <div class="flex gap-2 items-center">
+      <label for="group-filter" class="text-sm font-medium text-gray-600 dark:text-gray-400">Group:</label>
+      <select id="group-filter" class="search-input w-auto">
+        <option value="all">All</option>
+        {dataStructureGroups.map((group) => (
+          <option value={group}>{group}</option>
+        ))}
+      </select>
+    </div>
+  </div>
+
+  <div class="overflow-x-auto">
+    <table id="ds-table" class="data-table text-sm">
+      <thead>
+        <tr>
+          <th rowspan="2">Data Structure</th>
+          <th rowspan="2">Shape</th>
+          <th rowspan="2">Group</th>
+          <th rowspan="2" class="max-w-xs">Description</th>
+          <th colspan="4" class="text-center">Time Complexity (Average)</th>
+          <th colspan="4" class="text-center">Time Complexity (Worst)</th>
+          <th rowspan="2">Space</th>
+        </tr>
+        <tr>
+          <th class="text-center">Access</th>
+          <th class="text-center">Search</th>
+          <th class="text-center">Insert</th>
+          <th class="text-center">Delete</th>
+          <th class="text-center">Access</th>
+          <th class="text-center">Search</th>
+          <th class="text-center">Insert</th>
+          <th class="text-center">Delete</th>
+        </tr>
+      </thead>
+      <tbody>
+        {dataStructures.map((ds) => (
+          <tr data-group={ds.group}>
+            <td class="font-medium">{ds.name}</td>
+            <td class="text-center shape-cell">
+              <img
+                src={`/coding-algorithms/images/shapes/${ds.shape}`}
+                alt={ds.name}
+                class="w-16 h-12 object-contain mx-auto"
+                loading="lazy"
+              />
+            </td>
+            <td>{ds.group}</td>
+            <td class="max-w-xs text-sm text-gray-600 dark:text-gray-400">{ds.description}</td>
+            <td class="text-center"><ColorBadge notation={ds.time.average.access} /></td>
+            <td class="text-center"><ColorBadge notation={ds.time.average.search} /></td>
+            <td class="text-center"><ColorBadge notation={ds.time.average.insertion} /></td>
+            <td class="text-center"><ColorBadge notation={ds.time.average.deletion} /></td>
+            <td class="text-center"><ColorBadge notation={ds.time.worst.access} /></td>
+            <td class="text-center"><ColorBadge notation={ds.time.worst.search} /></td>
+            <td class="text-center"><ColorBadge notation={ds.time.worst.insertion} /></td>
+            <td class="text-center"><ColorBadge notation={ds.time.worst.deletion} /></td>
+            <td class="text-center"><ColorBadge notation={ds.space.worst} /></td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+</DocsLayout>
+
+<script>
+  const searchInput = document.getElementById('ds-search') as HTMLInputElement;
+  const groupFilter = document.getElementById('group-filter') as HTMLSelectElement;
+  const table = document.getElementById('ds-table');
+  const rows = table?.querySelectorAll('tbody tr');
+
+  function filterTable() {
+    const searchQuery = searchInput?.value.toLowerCase().trim() || '';
+    const selectedGroup = groupFilter?.value || 'all';
+
+    rows?.forEach((row) => {
+      const text = row.textContent?.toLowerCase() || '';
+      const rowGroup = row.getAttribute('data-group');
+
+      const matchesSearch = searchQuery === '' || text.includes(searchQuery);
+      const matchesGroup = selectedGroup === 'all' || rowGroup === selectedGroup;
+
+      (row as HTMLElement).style.display = matchesSearch && matchesGroup ? '' : 'none';
+    });
+  }
+
+  searchInput?.addEventListener('input', filterTable);
+  groupFilter?.addEventListener('change', filterTable);
+</script>

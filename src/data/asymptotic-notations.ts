@@ -1,0 +1,25 @@
+import type { AsymptoticNotation } from './types';
+
+export const asymptoticNotations: AsymptoticNotation[] = [
+  {
+    name: 'Big-O',
+    notation: 'O',
+    description: 'Represents an (upper) bound on the growth rate of a function or the maximum resource consumption of an algorithm.',
+    note: 'Associated with (worst-case) scenarios, indicating that the actual runtime will never exceed this upper limit.',
+    simplified: 'Order at Most <=',
+  },
+  {
+    name: 'Big-Theta',
+    notation: 'Θ',
+    description: 'Represents a (tight) bound on the growth rate of a function or both the upper and lower bounds together.',
+    note: 'Associated with (average-case) scenarios, indicating that the actual runtime will consistently fall within this bound.',
+    simplified: 'Order Exactly ==',
+  },
+  {
+    name: 'Big-Omega',
+    notation: 'Ω',
+    description: 'Represents a (lower) bound on the growth rate of a function or the minimum resource consumption of an algorithm.',
+    note: 'Associated with (best-case) scenarios, indicating that the actual runtime will never exceed this lower limit.',
+    simplified: 'Order at Least >=',
+  },
+];
