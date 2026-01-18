@@ -53,6 +53,6 @@ export const pythonUsefulNotes = [
   { title: 'PEP 484', notes: 'Type Hints' },
   { title: 'Immutables', notes: 'tuple | frozenset | int | float | str | bool' },
   { title: 'Testing', notes: 'pytest' },
-  { title: 'Dependency Manager', notes: 'pip | pdm | conda | poetry' },
+  { title: 'Dependency Manager', notes: 'pip | pdm | uv' },
   { title: 'Virtual Environments', notes: 'venv' },
 ];
