@@ -49,7 +49,7 @@ export const pythonMagicMethods = [
 ];
 
 export const pythonUsefulNotes = [
-  { title: 'PEP 8 (Style Guide)', notes: 'black | isort | pylint | mypy | pyright | ruff' },
+  { title: 'PEP 8 (Style Guide)', notes: 'black | isort | pylint | mypy | ruff | ty' },
   { title: 'PEP 484', notes: 'Type Hints' },
   { title: 'Immutables', notes: 'tuple | frozenset | int | float | str | bool' },
   { title: 'Testing', notes: 'pytest' },
