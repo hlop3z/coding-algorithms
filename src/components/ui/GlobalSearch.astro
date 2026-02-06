@@ -9,10 +9,16 @@
     aria-label="Open search"
   >
     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
     </svg>
     <span class="hidden sm:inline">Search</span>
-    <kbd class="hidden sm:inline-flex items-center gap-1 px-1.5 py-0.5 text-xs bg-gray-600 rounded">
+    <kbd
+      class="hidden sm:inline-flex items-center gap-1 px-1.5 py-0.5 text-xs bg-gray-600 rounded"
+    >
       <span class="text-[10px]">⌘</span>K
     </kbd>
   </button>
@@ -26,69 +32,168 @@
   aria-modal="true"
   aria-label="Search"
 >
-  <div class="fixed inset-0 bg-black/50 backdrop-blur-sm" id="search-backdrop"></div>
+  <div class="fixed inset-0 bg-black/50 backdrop-blur-sm" id="search-backdrop">
+  </div>
   <div class="fixed inset-x-4 top-[10%] mx-auto max-w-2xl">
-    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-2xl border border-gray-200 dark:border-gray-700 overflow-hidden">
+    <div
+      class="bg-white dark:bg-gray-800 rounded-xl shadow-2xl border border-gray-200 dark:border-gray-700 overflow-hidden"
+    >
       <div id="search-container" class="p-4"></div>
     </div>
   </div>
 </div>
 
 <style is:global>
-  /* Pagefind UI Customization */
-  :root {
-    --pagefind-ui-scale: 0.9;
-    --pagefind-ui-primary: #3b82f6;
-    --pagefind-ui-text: #1f2937;
-    --pagefind-ui-background: #ffffff;
-    --pagefind-ui-border: #e5e7eb;
-    --pagefind-ui-tag: #f3f4f6;
-    --pagefind-ui-border-width: 1px;
-    --pagefind-ui-border-radius: 8px;
-    --pagefind-ui-font: inherit;
-  }
+  @import url("@pagefind/default-ui/css/ui.css");
 
   .dark {
-    --pagefind-ui-primary: #60a5fa;
-    --pagefind-ui-text: #f3f4f6;
+    --pagefind-ui-primary: #e5e7eb;
+    --pagefind-ui-text: #9ca3af;
     --pagefind-ui-background: #1f2937;
     --pagefind-ui-border: #374151;
     --pagefind-ui-tag: #374151;
   }
 
-  .pagefind-ui__search-input {
-    font-size: 1rem !important;
-    padding: 0.75rem 1rem !important;
+  #search-container {
+    --search-result-spacing: calc(1rem * var(--pagefind-ui-scale));
+    --search-corners: calc(0.375rem * var(--pagefind-ui-scale));
+  }
+
+  pagefind-ui__drawer {
+    padding: 0 20px;
+  }
+
+  .pagefind-ui__results-area {
+    max-height: 55vh;
+    overflow-y: auto;
+  }
+
+  .pagefind-ui__results > * + * {
+    margin-top: var(--search-result-spacing);
+  }
+
+  .pagefind-ui__result {
+    border: 0;
+    padding: 0;
+  }
+
+  .pagefind-ui__result-inner {
+    align-items: stretch;
+    gap: 1px;
+    margin-top: 0;
+  }
+
+  .pagefind-ui__result-thumb {
+    display: none;
+  }
+
+  .pagefind-ui__result-title:not(
+    .pagefind-ui__result-nested .pagefind-ui__result-title
+  ),
+  .pagefind-ui__result-nested {
+    position: relative;
+    background-color: var(--pagefind-ui-background);
+  }
+
+  .pagefind-ui__result-inner > :first-child {
+    border-radius: var(--search-corners) var(--search-corners) 0 0;
+  }
+
+  .pagefind-ui__result-inner > :last-child {
+    border-radius: 0 0 var(--search-corners) var(--search-corners);
+  }
+
+  .pagefind-ui__result-inner
+    > .pagefind-ui__result-title:first-child:last-child {
+    border-radius: var(--search-corners);
+  }
+
+  .pagefind-ui__result-title:not(
+    .pagefind-ui__result-nested .pagefind-ui__result-title
+  ) {
+    padding: 0.75rem;
+  }
+
+  .pagefind-ui__result-nested {
+    padding: 0.6rem 0.75rem;
+    border-top: 1px solid var(--pagefind-ui-border);
+  }
+
+  .pagefind-ui__result-title:not(
+      .pagefind-ui__result-nested .pagefind-ui__result-title
+    ):hover,
+  .pagefind-ui__result-nested:hover {
+    outline: 1px solid #60a5fa;
   }
 
   .pagefind-ui__result-link {
-    font-weight: 500 !important;
+    position: unset;
+    font-weight: 600;
+    color: var(--pagefind-ui-primary);
+    text-decoration: none;
+  }
+
+  .pagefind-ui__result-link:hover {
+    text-decoration: none;
+    color: #60a5fa;
+  }
+
+  .pagefind-ui__result-link::after {
+    content: "";
+    position: absolute;
+    inset: 0;
   }
 
   .pagefind-ui__result-excerpt {
-    font-size: 0.875rem !important;
-    color: var(--pagefind-ui-text) !important;
-    opacity: 0.7;
+    font-size: calc(0.875rem * var(--pagefind-ui-scale));
+    overflow-wrap: anywhere;
+    margin-top: 0.25rem;
+  }
+
+  .pagefind-ui__result-excerpt mark {
+    background-color: transparent;
+    color: var(--pagefind-ui-primary);
+    font-weight: 600;
+  }
+
+  .pagefind-ui__search-clear {
+    width: calc(40px * var(--pagefind-ui-scale));
+    padding: 0;
+    background-color: transparent;
+    overflow: hidden;
+    font-size: 0;
+  }
+
+  .pagefind-ui__search-clear::before {
+    content: "×";
+    display: block;
+    font-size: 1.5rem;
+    line-height: 1;
+    color: var(--pagefind-ui-text);
+  }
+
+  .pagefind-ui__search-clear:hover::before {
+    color: var(--pagefind-ui-primary);
   }
 </style>
 
 <script>
   // Import Pagefind UI
   async function initSearch() {
-    const container = document.getElementById('search-container');
+    const container = document.getElementById("search-container");
     if (!container) return;
 
     try {
-      const { PagefindUI } = await import('@pagefind/default-ui');
+      const { PagefindUI } = await import("@pagefind/default-ui");
 
       new PagefindUI({
         element: container,
         showSubResults: true,
         showImages: false,
-        bundlePath: '/coding-algorithms/pagefind/',
-        baseUrl: '/coding-algorithms/',
+        bundlePath: "/coding-algorithms/pagefind/",
+        baseUrl: "/coding-algorithms/",
         translations: {
-          placeholder: 'Search documentation...',
+          placeholder: "Search documentation...",
           zero_results: 'No results found for "[SEARCH_TERM]"',
         },
       });
@@ -104,14 +209,14 @@
   }
 
   // Modal controls
-  const modal = document.getElementById('search-modal');
-  const btn = document.getElementById('search-btn');
-  const backdrop = document.getElementById('search-backdrop');
+  const modal = document.getElementById("search-modal");
+  const btn = document.getElementById("search-btn");
+  const backdrop = document.getElementById("search-backdrop");
   let initialized = false;
 
   function openModal() {
-    modal?.classList.remove('hidden');
-    document.body.style.overflow = 'hidden';
+    modal?.classList.remove("hidden");
+    document.body.style.overflow = "hidden";
 
     if (!initialized) {
       initSearch();
@@ -120,25 +225,27 @@
 
     // Focus search input after a short delay
     setTimeout(() => {
-      const input = document.querySelector('.pagefind-ui__search-input') as HTMLInputElement;
+      const input = document.querySelector(
+        ".pagefind-ui__search-input",
+      ) as HTMLInputElement;
       input?.focus();
     }, 100);
   }
 
   function closeModal() {
-    modal?.classList.add('hidden');
-    document.body.style.overflow = '';
+    modal?.classList.add("hidden");
+    document.body.style.overflow = "";
   }
 
-  btn?.addEventListener('click', openModal);
-  backdrop?.addEventListener('click', closeModal);
+  btn?.addEventListener("click", openModal);
+  backdrop?.addEventListener("click", closeModal);
 
   // Keyboard shortcuts
-  document.addEventListener('keydown', (e) => {
+  document.addEventListener("keydown", (e) => {
     // Cmd/Ctrl + K to open
-    if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+    if ((e.metaKey || e.ctrlKey) && e.key === "k") {
       e.preventDefault();
-      if (modal?.classList.contains('hidden')) {
+      if (modal?.classList.contains("hidden")) {
         openModal();
       } else {
         closeModal();
@@ -146,7 +253,7 @@
     }
 
     // Escape to close
-    if (e.key === 'Escape' && !modal?.classList.contains('hidden')) {
+    if (e.key === "Escape" && !modal?.classList.contains("hidden")) {
       closeModal();
     }
   });
