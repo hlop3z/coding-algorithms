@@ -167,6 +167,28 @@ export const dataStructures: DataStructure[] = [
     space: { worst: 'O(n)' },
   },
   {
+    name: 'Vector',
+    shape: 'Array.png',
+    group: 'List',
+    description: 'A dynamic array that automatically resizes itself when elements are added or removed',
+    time: {
+      average: { access: 'Θ(1)', search: 'Θ(n)', insertion: 'Θ(n)', deletion: 'Θ(n)' },
+      worst: { access: 'O(1)', search: 'O(n)', insertion: 'O(n)', deletion: 'O(n)' },
+    },
+    space: { worst: 'O(n)' },
+  },
+  {
+    name: 'Segment-Tree',
+    shape: 'Binary-AVL-Tree.png',
+    group: 'Tree',
+    description: 'A binary tree used for storing intervals or segments, allowing efficient range queries and updates',
+    time: {
+      average: { access: 'Θ(log(n))', search: 'Θ(log(n))', insertion: 'Θ(log(n))', deletion: 'Θ(log(n))' },
+      worst: { access: 'O(log(n))', search: 'O(log(n))', insertion: 'O(log(n))', deletion: 'O(log(n))' },
+    },
+    space: { worst: 'O(n)' },
+  },
+  {
     name: 'Hash-Table',
     shape: 'Hash-Table.png',
     group: 'Other',
