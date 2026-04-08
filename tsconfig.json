@@ -9,7 +9,8 @@
       "@data/*": ["src/data/*"],
       "@utils/*": ["src/utils/*"]
     },
-    "strictNullChecks": true
+    "strictNullChecks": true,
+    "lib": ["ES2020", "DOM"]
   },
   "include": ["src/**/*", "src/types/**/*.d.ts"]
 }
