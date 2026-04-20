@@ -139,6 +139,34 @@ export interface GraphQLOperation {
 }
 
 // ============================================
+// Docker Types
+// ============================================
+
+export interface DockerCommand {
+  caption?: string;
+  command: string;
+  note?: string;
+}
+
+export interface DockerGroup {
+  title: string;
+  intro?: string;
+  commands: DockerCommand[];
+}
+
+export interface DockerCategory {
+  id: string;
+  label: string;
+  description?: string;
+  groups: DockerGroup[];
+}
+
+export interface DockerTip {
+  title: string;
+  body: string;
+}
+
+// ============================================
 // Resource Types
 // ============================================
 
