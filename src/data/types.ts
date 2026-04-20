@@ -167,6 +167,34 @@ export interface DockerTip {
 }
 
 // ============================================
+// Git Types
+// ============================================
+
+export interface GitCommand {
+  caption?: string;
+  command: string;
+  note?: string;
+}
+
+export interface GitGroup {
+  title: string;
+  intro?: string;
+  commands: GitCommand[];
+}
+
+export interface GitCategory {
+  id: string;
+  label: string;
+  description?: string;
+  groups: GitGroup[];
+}
+
+export interface GitTip {
+  title: string;
+  body: string;
+}
+
+// ============================================
 // Resource Types
 // ============================================
 

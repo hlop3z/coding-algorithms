@@ -1,0 +1,273 @@
+---
+import DocsLayout from "@/layouts/DocsLayout.astro";
+import { gitCategories, gitTips } from "@/data/git-notes";
+
+let codeIndex = 0;
+const nextId = () => `git-code-${codeIndex++}`;
+---
+
+<DocsLayout title="Git">
+  <div class="mb-6">
+    <h1 class="text-3xl font-bold mb-2">Git</h1>
+    <p class="text-gray-600 dark:text-gray-400">
+      Cheat-sheet for daily work and incident recovery — from staging through
+      rebase, reflog, worktrees, and bisect.
+    </p>
+  </div>
+
+  <!-- Sticky section nav -->
+  <nav
+    aria-label="Git sections"
+    class="sticky top-14 z-40 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 -mx-4 px-4 py-2 mb-6"
+  >
+    <ul class="flex flex-wrap gap-2 items-center">
+      {
+        gitCategories.map((cat) => (
+          <li>
+            <a
+              href={`#${cat.id}`}
+              class="git-nav-link inline-flex items-center px-3 py-1 text-xs font-medium rounded-full border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 hover:border-blue-400 dark:hover:border-blue-500 transition-colors"
+              data-target={cat.id}
+            >
+              {cat.label}
+            </a>
+          </li>
+        ))
+      }
+      <li>
+        <a
+          href="#tips"
+          class="git-nav-link inline-flex items-center px-3 py-1 text-xs font-medium rounded-full border border-yellow-300 dark:border-yellow-700 text-yellow-700 dark:text-yellow-300 hover:bg-yellow-50 dark:hover:bg-yellow-900/30 transition-colors"
+          data-target="tips"
+        >
+          Tips &amp; Pitfalls
+        </a>
+      </li>
+      <li class="ml-auto w-full sm:w-64 relative">
+        <svg
+          class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+        </svg>
+        <input
+          id="git-search"
+          type="text"
+          placeholder="Filter commands..."
+          class="search-input pl-9 w-full text-sm"
+        />
+      </li>
+    </ul>
+  </nav>
+
+  <div id="git-content" class="space-y-14">
+    {
+      gitCategories.map((cat) => (
+        <section id={cat.id} class="scroll-mt-28">
+          <div class="mb-5">
+            <h2 class="text-2xl font-semibold">{cat.label}</h2>
+            {cat.description && (
+              <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                {cat.description}
+              </p>
+            )}
+          </div>
+
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            {cat.groups.map((group) => (
+              <div class="git-group border border-gray-200 dark:border-gray-700 rounded-lg p-4 bg-white dark:bg-gray-900">
+                <h3 class="text-base font-semibold mb-2 text-gray-900 dark:text-gray-100">
+                  {group.title}
+                </h3>
+                {group.intro && (
+                  <p class="text-xs text-gray-600 dark:text-gray-400 mb-3 leading-relaxed">
+                    {group.intro}
+                  </p>
+                )}
+
+                {group.commands.length > 0 && (
+                  <div class="space-y-2.5">
+                    {group.commands.map((cmd) => {
+                      const id = nextId();
+                      return (
+                        <div
+                          class="git-cmd"
+                          data-search={`${group.title} ${cmd.caption ?? ""} ${cmd.command}`.toLowerCase()}
+                        >
+                          {cmd.caption && (
+                            <p class="text-xs text-gray-600 dark:text-gray-400 mb-1">
+                              {cmd.caption}
+                            </p>
+                          )}
+                          <div class="relative group">
+                            <code
+                              id={id}
+                              class="block bg-gray-100 dark:bg-gray-800 py-2 pl-3 pr-10 rounded text-[13px] font-mono overflow-x-auto text-blue-700 dark:text-blue-300 whitespace-pre"
+                            >
+                              {cmd.command}
+                            </code>
+                            <button
+                              type="button"
+                              class="copy-btn absolute top-1 right-1 p-1.5 rounded bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 opacity-0 group-hover:opacity-100 focus:opacity-100 transition-opacity"
+                              data-target={id}
+                              aria-label="Copy to clipboard"
+                            >
+                              <svg
+                                class="w-4 h-4 text-gray-600 dark:text-gray-300"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                              >
+                                <path
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                  stroke-width="2"
+                                  d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
+                                />
+                              </svg>
+                            </button>
+                          </div>
+                          {cmd.note && (
+                            <p class="text-xs text-gray-500 dark:text-gray-400 mt-1 italic">
+                              {cmd.note}
+                            </p>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </section>
+      ))
+    }
+
+    <!-- Tips & Pitfalls -->
+    <section id="tips" class="scroll-mt-28">
+      <div class="mb-5">
+        <h2 class="text-2xl font-semibold">Tips &amp; Pitfalls</h2>
+        <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">
+          Things that save careers during an incident.
+        </p>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+        {
+          gitTips.map((tip) => (
+            <div class="border-l-4 border-yellow-400 bg-yellow-50/60 dark:bg-yellow-900/10 dark:border-yellow-600 rounded-r-lg p-4">
+              <h3 class="font-semibold text-sm text-gray-900 dark:text-gray-100 mb-1">
+                {tip.title}
+              </h3>
+              <p
+                class="text-xs text-gray-700 dark:text-gray-300 leading-relaxed"
+                set:html={tip.body.replace(
+                  /`([^`]+)`/g,
+                  '<code class="px-1 py-0.5 rounded bg-gray-200 dark:bg-gray-800 font-mono text-[11px]">$1</code>',
+                )}
+              />
+            </div>
+          ))
+        }
+      </div>
+    </section>
+  </div>
+</DocsLayout>
+
+<script>
+  // Copy buttons
+  document.querySelectorAll(".copy-btn").forEach((btn) => {
+    btn.addEventListener("click", async () => {
+      const targetId = btn.getAttribute("data-target");
+      const codeElement = document.getElementById(targetId!);
+      const text = codeElement?.textContent?.trim() || "";
+
+      try {
+        await navigator.clipboard.writeText(text);
+        const svg = btn.querySelector("svg");
+        const originalPath = svg?.innerHTML;
+        if (svg) {
+          svg.innerHTML =
+            '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />';
+          setTimeout(() => {
+            svg.innerHTML = originalPath!;
+          }, 1500);
+        }
+      } catch (err) {
+        console.error("Failed to copy:", err);
+      }
+    });
+  });
+
+  // Filter commands
+  const searchInput = document.getElementById(
+    "git-search",
+  ) as HTMLInputElement | null;
+  const cmdNodes = document.querySelectorAll<HTMLElement>(".git-cmd");
+  const groupNodes = document.querySelectorAll<HTMLElement>(".git-group");
+  const sectionNodes = document.querySelectorAll<HTMLElement>(
+    "#git-content > section",
+  );
+
+  searchInput?.addEventListener("input", () => {
+    const q = searchInput.value.toLowerCase().trim();
+
+    cmdNodes.forEach((node) => {
+      const hay = node.getAttribute("data-search") || "";
+      node.style.display = !q || hay.includes(q) ? "" : "none";
+    });
+
+    groupNodes.forEach((group) => {
+      const visibleCmds = group.querySelectorAll<HTMLElement>(
+        '.git-cmd:not([style*="display: none"])',
+      );
+      const hasCommands = group.querySelectorAll(".git-cmd").length > 0;
+      group.style.display =
+        !q || !hasCommands || visibleCmds.length > 0 ? "" : "none";
+    });
+
+    sectionNodes.forEach((section) => {
+      if (section.id === "tips") return;
+      const visibleGroups = section.querySelectorAll<HTMLElement>(
+        '.git-group:not([style*="display: none"])',
+      );
+      section.style.display = !q || visibleGroups.length > 0 ? "" : "none";
+    });
+  });
+
+  // Highlight active section chip
+  const navLinks =
+    document.querySelectorAll<HTMLAnchorElement>(".git-nav-link");
+  const targets = Array.from(navLinks)
+    .map((l) => document.getElementById(l.dataset.target!))
+    .filter((el): el is HTMLElement => !!el);
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        const id = entry.target.id;
+        navLinks.forEach((link) => {
+          const match = link.dataset.target === id;
+          link.classList.toggle("bg-blue-50", match && id !== "tips");
+          link.classList.toggle("dark:bg-blue-900/30", match && id !== "tips");
+          if (id !== "tips") {
+            link.classList.toggle("border-blue-400", match);
+            link.classList.toggle("dark:border-blue-500", match);
+            link.classList.toggle("text-blue-700", match);
+            link.classList.toggle("dark:text-blue-300", match);
+          }
+        });
+      });
+    },
+    { rootMargin: "-120px 0px -60% 0px", threshold: 0 },
+  );
+
+  targets.forEach((t) => observer.observe(t));
+</script>

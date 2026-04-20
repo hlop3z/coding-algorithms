@@ -16,4 +16,5 @@ export { sqlStatements } from './sql-notes';
 export { pythonZen, pythonMagicMethods, pythonUsefulNotes } from './python-notes';
 export { pythonModules, allPythonMethods, pythonModuleGroups } from './python-modules';
 export { dockerCategories, dockerTips } from './docker-notes';
+export { gitCategories, gitTips } from './git-notes';
 export { resources } from './resources';
