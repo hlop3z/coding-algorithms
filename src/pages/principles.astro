@@ -10,30 +10,74 @@ const columns = [
 ---
 
 <DocsLayout title="Principles & Design">
-  <h1 class="text-3xl font-bold mb-8">Principles & Design</h1>
+  <h1 class="text-3xl font-bold mb-6">Principles & Design</h1>
 
-  <section class="mb-12">
-    <h2 class="text-2xl font-semibold mb-4">Object-Oriented Programming (OOP)</h2>
-    <SimpleTable data={concepts.oop} columns={columns} />
-  </section>
+  <div class="mb-8 max-w-md relative">
+    <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+    </svg>
+    <input
+      id="principles-search"
+      type="text"
+      placeholder="Search across all sections..."
+      class="search-input pl-10 w-full"
+    />
+  </div>
 
-  <section class="mb-12">
-    <h2 class="text-2xl font-semibold mb-4">SOLID Principles</h2>
-    <SimpleTable data={concepts.solid} columns={columns} />
-  </section>
+  <p id="principles-empty" class="hidden text-sm text-gray-500 dark:text-gray-400 italic mb-8">No matches. Try a different term.</p>
 
-  <section class="mb-12">
-    <h2 class="text-2xl font-semibold mb-4">Software Design Patterns</h2>
-    <SimpleTable data={concepts.design} columns={columns} />
-  </section>
+  <div id="principles-content">
+    <section class="mb-12 principles-section">
+      <h2 class="text-2xl font-semibold mb-4">Object-Oriented Programming (OOP)</h2>
+      <SimpleTable data={concepts.oop} columns={columns} />
+    </section>
 
-  <section class="mb-12">
-    <h2 class="text-2xl font-semibold mb-4">Software Development Principles</h2>
-    <SimpleTable data={concepts.principles} columns={columns} />
-  </section>
+    <section class="mb-12 principles-section">
+      <h2 class="text-2xl font-semibold mb-4">SOLID Principles</h2>
+      <SimpleTable data={concepts.solid} columns={columns} />
+    </section>
 
-  <section class="mb-12">
-    <h2 class="text-2xl font-semibold mb-4">Software Development Paradigms</h2>
-    <SimpleTable data={concepts.paradigms} columns={columns} />
-  </section>
+    <section class="mb-12 principles-section">
+      <h2 class="text-2xl font-semibold mb-4">Software Design Patterns</h2>
+      <SimpleTable data={concepts.design} columns={columns} />
+    </section>
+
+    <section class="mb-12 principles-section">
+      <h2 class="text-2xl font-semibold mb-4">Software Development Principles</h2>
+      <SimpleTable data={concepts.principles} columns={columns} />
+    </section>
+
+    <section class="mb-12 principles-section">
+      <h2 class="text-2xl font-semibold mb-4">Software Development Paradigms</h2>
+      <SimpleTable data={concepts.paradigms} columns={columns} />
+    </section>
+  </div>
 </DocsLayout>
+
+<script>
+  const searchInput = document.getElementById('principles-search') as HTMLInputElement | null;
+  const sections = document.querySelectorAll<HTMLElement>('.principles-section');
+  const emptyState = document.getElementById('principles-empty');
+
+  searchInput?.addEventListener('input', () => {
+    const q = searchInput.value.toLowerCase().trim();
+    let totalVisible = 0;
+
+    sections.forEach((section) => {
+      const rows = section.querySelectorAll<HTMLTableRowElement>('tbody tr');
+      let visibleInSection = 0;
+
+      rows.forEach((row) => {
+        const text = row.textContent?.toLowerCase() || '';
+        const match = !q || text.includes(q);
+        row.style.display = match ? '' : 'none';
+        if (match) visibleInSection++;
+      });
+
+      section.style.display = visibleInSection > 0 ? '' : 'none';
+      totalVisible += visibleInSection;
+    });
+
+    emptyState?.classList.toggle('hidden', totalVisible > 0 || !q);
+  });
+</script>
