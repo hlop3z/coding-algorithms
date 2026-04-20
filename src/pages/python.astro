@@ -2,64 +2,188 @@
 import DocsLayout from '@/layouts/DocsLayout.astro';
 import SearchInput from '@/components/ui/SearchInput.astro';
 import { pythonZen, pythonMagicMethods, pythonUsefulNotes } from '@/data/python-notes';
+import { allPythonMethods, pythonModuleGroups } from '@/data/python-modules';
 ---
 
 <DocsLayout title="Python">
   <h1 class="text-3xl font-bold mb-8">Python</h1>
 
-  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-    <!-- Dunder Methods Column -->
-    <div>
-      <h2 class="text-xl font-semibold mb-4">Dunder (Magic) Methods</h2>
-      <div class="mb-4">
-        <SearchInput id="magic-search" targetId="magic-table" placeholder="Search methods..." />
-      </div>
-      <div class="overflow-y-auto max-h-[600px] border border-gray-200 dark:border-gray-700 rounded-lg">
-        <table id="magic-table" class="data-table text-sm">
-          <thead class="sticky top-0">
-            <tr>
-              <th>Method</th>
-              <th>Description</th>
-            </tr>
-          </thead>
-          <tbody>
-            {pythonMagicMethods.map((item) => (
-              <tr>
-                <td class="font-mono text-purple-600 dark:text-purple-400 whitespace-nowrap">{item.method}</td>
-                <td class="text-gray-600 dark:text-gray-400">{item.description}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-    <!-- Zen of Python Column -->
-    <div>
-      <h2 class="text-xl font-semibold mb-4">PEP 20 - The Zen of Python</h2>
-      <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-4 border border-gray-200 dark:border-gray-700">
-        <ol class="space-y-2">
-          {pythonZen.map((item) => (
-            <li class="flex gap-3">
-              <span class="text-gray-400 font-mono text-sm w-6 flex-shrink-0">{item.index}.</span>
-              <span class="text-gray-700 dark:text-gray-300 text-sm italic">{item.description}</span>
-            </li>
-          ))}
-        </ol>
-      </div>
-    </div>
-
-    <!-- Useful Notes Column -->
-    <div>
-      <h2 class="text-xl font-semibold mb-4">Useful Notes</h2>
-      <div class="space-y-4">
-        {pythonUsefulNotes.map((note) => (
-          <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-4 border border-gray-200 dark:border-gray-700">
-            <h3 class="font-medium text-gray-900 dark:text-gray-100 mb-2">{note.title}</h3>
-            <p class="text-sm text-gray-600 dark:text-gray-400 font-mono">{note.notes}</p>
-          </div>
-        ))}
-      </div>
+  <!-- Tab Nav -->
+  <div class="border-b border-gray-200 dark:border-gray-700 mb-6">
+    <div role="tablist" class="flex gap-1 -mb-px">
+      <button
+        type="button"
+        role="tab"
+        data-tab="core"
+        aria-selected="true"
+        aria-controls="tab-core"
+        class="tab-btn px-4 py-2 text-sm font-medium border-b-2 border-blue-500 text-blue-600 dark:text-blue-400"
+      >
+        Core
+      </button>
+      <button
+        type="button"
+        role="tab"
+        data-tab="modules"
+        aria-selected="false"
+        aria-controls="tab-modules"
+        class="tab-btn px-4 py-2 text-sm font-medium border-b-2 border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
+      >
+        Modules
+      </button>
     </div>
   </div>
+
+  <!-- Core Tab -->
+  <section id="tab-core" role="tabpanel" class="tab-panel">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <!-- Dunder Methods Column -->
+      <div>
+        <h2 class="text-xl font-semibold mb-4">Dunder (Magic) Methods</h2>
+        <div class="mb-4">
+          <SearchInput id="magic-search" targetId="magic-table" placeholder="Search methods..." />
+        </div>
+        <div class="overflow-y-auto max-h-[600px] border border-gray-200 dark:border-gray-700 rounded-lg">
+          <table id="magic-table" class="data-table text-sm">
+            <thead class="sticky top-0">
+              <tr>
+                <th>Method</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              {pythonMagicMethods.map((item) => (
+                <tr>
+                  <td class="font-mono text-purple-600 dark:text-purple-400 whitespace-nowrap">{item.method}</td>
+                  <td class="text-gray-600 dark:text-gray-400">{item.description}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Zen of Python Column -->
+      <div>
+        <h2 class="text-xl font-semibold mb-4">PEP 20 - The Zen of Python</h2>
+        <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-4 border border-gray-200 dark:border-gray-700">
+          <ol class="space-y-2">
+            {pythonZen.map((item) => (
+              <li class="flex gap-3">
+                <span class="text-gray-400 font-mono text-sm w-6 flex-shrink-0">{item.index}.</span>
+                <span class="text-gray-700 dark:text-gray-300 text-sm italic">{item.description}</span>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </div>
+
+      <!-- Useful Notes Column -->
+      <div>
+        <h2 class="text-xl font-semibold mb-4">Useful Notes</h2>
+        <div class="space-y-4">
+          {pythonUsefulNotes.map((note) => (
+            <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-4 border border-gray-200 dark:border-gray-700">
+              <h3 class="font-medium text-gray-900 dark:text-gray-100 mb-2">{note.title}</h3>
+              <p class="text-sm text-gray-600 dark:text-gray-400 font-mono">{note.notes}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Modules Tab -->
+  <section id="tab-modules" role="tabpanel" class="tab-panel hidden">
+    <p class="text-gray-600 dark:text-gray-400 mb-6">Common Python methods organized by module.</p>
+
+    <div class="mb-6 flex flex-wrap gap-4 items-center">
+      <SearchInput id="py-search" targetId="py-table" placeholder="Search by method, group, or description..." class="flex-1 min-w-[200px]" />
+
+      <div class="flex gap-2 items-center">
+        <label for="module-filter" class="text-sm font-medium text-gray-600 dark:text-gray-400">Module:</label>
+        <select id="module-filter" class="search-input w-auto">
+          <option value="all">All</option>
+          {pythonModuleGroups.map((group) => (
+            <option value={group}>{group}</option>
+          ))}
+        </select>
+      </div>
+    </div>
+
+    <div class="overflow-x-auto">
+      <table id="py-table" class="data-table">
+        <thead>
+          <tr>
+            <th>Method</th>
+            <th>Module</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          {allPythonMethods.map((item) => (
+            <tr data-group={item.group}>
+              <td class="font-mono text-sm text-blue-600 dark:text-blue-400">{item.method}</td>
+              <td class="whitespace-nowrap">
+                <span class="px-2 py-1 bg-gray-100 dark:bg-gray-800 rounded text-sm">{item.group}</span>
+              </td>
+              <td class="text-sm text-gray-600 dark:text-gray-400">{item.description}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </section>
 </DocsLayout>
+
+<script>
+  // Tabs
+  const tabButtons = document.querySelectorAll<HTMLButtonElement>('.tab-btn');
+  const tabPanels = document.querySelectorAll<HTMLElement>('.tab-panel');
+
+  const activeClasses = ['border-blue-500', 'text-blue-600', 'dark:text-blue-400'];
+  const inactiveClasses = ['border-transparent', 'text-gray-500', 'dark:text-gray-400', 'hover:text-gray-700', 'dark:hover:text-gray-200'];
+
+  function activateTab(name: string) {
+    tabButtons.forEach((btn) => {
+      const isActive = btn.dataset.tab === name;
+      btn.setAttribute('aria-selected', String(isActive));
+      btn.classList.remove(...activeClasses, ...inactiveClasses);
+      btn.classList.add(...(isActive ? activeClasses : inactiveClasses));
+    });
+    tabPanels.forEach((panel) => {
+      panel.classList.toggle('hidden', panel.id !== `tab-${name}`);
+    });
+  }
+
+  tabButtons.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const name = btn.dataset.tab;
+      if (name) activateTab(name);
+    });
+  });
+
+  // Modules tab filter
+  const searchInput = document.getElementById('py-search') as HTMLInputElement;
+  const moduleFilter = document.getElementById('module-filter') as HTMLSelectElement;
+  const table = document.getElementById('py-table');
+  const rows = table?.querySelectorAll('tbody tr');
+
+  function filterTable() {
+    const searchQuery = searchInput?.value.toLowerCase().trim() || '';
+    const selectedModule = moduleFilter?.value || 'all';
+
+    rows?.forEach((row) => {
+      const text = row.textContent?.toLowerCase() || '';
+      const rowGroup = row.getAttribute('data-group');
+
+      const matchesSearch = searchQuery === '' || text.includes(searchQuery);
+      const matchesModule = selectedModule === 'all' || rowGroup === selectedModule;
+
+      (row as HTMLElement).style.display = matchesSearch && matchesModule ? '' : 'none';
+    });
+  }
+
+  searchInput?.addEventListener('input', filterTable);
+  moduleFilter?.addEventListener('change', filterTable);
+</script>
